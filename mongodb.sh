@@ -9,6 +9,9 @@ LOGS_FOLDER="/var/log/shellscript-logs"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 
+mkdir -p $LOGS_FOLDER
+echo "Script started executing at: $(date)" | tee -a $LOG_FILE
+
 if [ $USERID -ne 0 ]
 then
     echo -e "$R ERROR:: Please run this script with root access $N" | tee -a $LOG_FILE
@@ -37,11 +40,11 @@ VALIDATE $? "Installing mongodb server"
 systemctl enable mongodb &>>$LOG_FILE
 VALIDATE $? "Enabling MongoDB"
 
-systemctl start mongod &>>$LOG_FILE
+systemctl start mongodb &>>$LOG_FILE
 VALIDATE $? "starting MongoDB"
 
 seg -i 's/127.0.0.1/0.0.0.0/g in /etc/mongod.conf'
 VALIDATE $? "Editing MongoDb conf file for remote connections"
 
-systemctl restart mongod &>>$LOG_FILE
+systemctl restart mongodb &>>$LOG_FILE
 VALIDATE $? "Restarting MongoDB"
