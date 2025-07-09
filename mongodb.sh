@@ -28,7 +28,7 @@ VALIDATE(){
     fi
 }
 
-cp mongodb.repo /etc/yum.repos.d/mongo.repo
+cp mongodb.repo /etc/yum.repos.d/mongodb.repo
 VATIDATE $? "copying mongodb repo"
 
 dnf install mongodb-org -y &>>$LOG_FILE
