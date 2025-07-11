@@ -4,16 +4,19 @@ Description=Payment Service
 [Service]
 User=root
 WorkingDirectory=/app
-// highlight-start
-Environment=CART_HOST=cart.lakshmi.cyou
-Environment=CART_PORT=8080
-Environment=USER_HOST=user.lakshmi.cyou
-Environment=USER_PORT=8080
-Environment=AMQP_HOST=rabbitmq.lakshmi.cyou
-// highlight-end
+
+# 🌐 Environment variables for service-to-service communication
+Environment=CART_HOST=cart.lakshmi.cyou       # 👈 Cart service host
+Environment=CART_PORT=8080                    # 👈 Cart service port
+Environment=USER_HOST=user.lakshmi.cyou       # 👈 User service host
+Environment=USER_PORT=8080                    # 👈 User service port
+Environment=AMQP_HOST=rabbitmq.lakshmi.cyou   # 👈 RabbitMQ host for messaging
+
+# 🔐 Authentication details for AMQP (RabbitMQ)
 Environment=AMQP_USER=roboshop
 Environment=AMQP_PASS=roboshop123
 
+# ⚙️ Application start/stop configuration
 ExecStart=/usr/local/bin/uwsgi --ini payment.ini
 ExecStop=/bin/kill -9 $MAINPID
 SyslogIdentifier=payment
